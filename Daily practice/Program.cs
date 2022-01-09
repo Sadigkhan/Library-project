@@ -69,42 +69,64 @@ namespace Daily_practice
 
         private static void RemoveByNo(ref Library library)
         {
-            string id = string.Empty;
+            string ID = string.Empty;
+
             Console.WriteLine("Silmek istediyiniz kitaba uygun ID nomresini daxil edin...");
-            id = Console.ReadLine();
+            ID = Console.ReadLine();
+            bool finder = true;
             foreach (Book item in library.Booklist)
             {
-                if (item.Code.ToUpper() == id.ToUpper())
+                if (item.Code.ToUpper() == ID.ToUpper())
                 {
                     library.Booklist.Remove(item);
+                    finder = false;
                     Console.WriteLine("Daxil etdiyiniz ID nomresine uygun kitab tapildi ve ugurla kitabxana siyahisindan silindi...");
-                    return;
-                }
-                else
-                {
-                    Console.WriteLine("Daxil olunan ID nomresine uygun kitab movcud deyil...");
-                    return;
+                    break;
                 }
             }
-            
+
+            if (finder)
+            {
+                Console.WriteLine("Daxil olunan ID nomresine uygun kitab movcud deyil...");
+            }
+
         }
 
         private static void FindAllBooksByPageCountRange(ref Library library)
         {
             string min = string.Empty;
             Console.WriteLine("Minimal sehife sayini daxil edin:");
+            reEnterMin:
             min = Console.ReadLine();
             int min1;
+            if (!int.TryParse(min,out min1))
+            {
+                Console.WriteLine("Duzgun daxil edin");
+                goto reEnterMin;
+            }
 
             string max = string.Empty;
             Console.WriteLine("Maksimal sehife sayini daxil edin");
+            reEnterMax:
             max = Console.ReadLine();
             int max1;
+            if (!int.TryParse(max, out max1))
+            {
+                Console.WriteLine("Duzgun daxil edin");
+                goto reEnterMax;
+            }
             if (int.TryParse(min, out min1)&&int.TryParse(max,out max1))
             {
+                if (min1>max1)
+                {
+                    Console.WriteLine("Minimal deyer maksimal deyerden cox ola bilmez");
+                }
                 List<Book> Range = new List<Book>(library.Booklist.FindAll(x => x.PageCount >= min1 && x.PageCount <= max1));
+                Console.Clear();
+                Console.WriteLine("Axtarisiniza uygun kitablarin siyahisi:");
                 foreach (Book item in Range)
                 {
+                    
                     Console.WriteLine("____________________________");
                     Console.WriteLine(item);
                     Console.WriteLine("____________________________");
