@@ -94,12 +94,17 @@ namespace Daily_practice
 
         private static void FindAllBooksByPageCountRange(ref Library library)
         {
+            if (library.Booklist.Count == 0)
+            {
+                Console.WriteLine("Kitabxanada hec bir kitab movcud deyil...");
+                return;
+            }
             string min = string.Empty;
             Console.WriteLine("Minimal sehife sayini daxil edin:");
             reEnterMin:
             min = Console.ReadLine();
             int min1;
-            if (!int.TryParse(min,out min1))
+            if (!int.TryParse(min,out min1)||min1<0)
             {
                 Console.WriteLine("Duzgun daxil edin");
                 goto reEnterMin;
@@ -110,7 +115,7 @@ namespace Daily_practice
             reEnterMax:
             max = Console.ReadLine();
             int max1;
-            if (!int.TryParse(max, out max1))
+            if (!int.TryParse(max, out max1)||max1<0)
             {
                 Console.WriteLine("Duzgun daxil edin");
                 goto reEnterMax;
@@ -122,6 +127,11 @@ namespace Daily_practice
                     Console.WriteLine("Minimal deyer maksimal deyerden cox ola bilmez");
                 }
                 List<Book> Range = new List<Book>(library.Booklist.FindAll(x => x.PageCount >= min1 && x.PageCount <= max1));
+                if (Range.Count==0)
+                {
+                    Console.WriteLine("Axtarisa uygun hec bir kitab movcud deyil...");
+                    return;
+                }
                 Console.Clear();
                 Console.WriteLine("Axtarisiniza uygun kitablarin siyahisi:");
                 foreach (Book item in Range)
